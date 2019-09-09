@@ -1,12 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
-import ParentComponent from './parentComponent';
 
-function App() {
+class App extends Component {
+  render() {
+    return (
+      <div className="App">
+        <h1>iPhone Stopwatch</h1>
+        <Stopwatch status={false} timeElapsed={0} />
+      </div>
+    );
+  }
+}
+
+function Stopwatch({ status, timeElapsed }) {
   return (
-    <div className="App">
-      <ParentComponent />
+    <div>
+      <p>{timeElapsed}</p>
+      <button>{status ? 'Stop' : 'Start'}</button>
+      <button>Reset/Lap</button>
     </div>
   );
 }
