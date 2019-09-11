@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Stopwatch } from './Stopwatch';
 
 class App extends Component {
   state = {
@@ -38,8 +37,6 @@ class App extends Component {
       else {
         this.state.lapsList.push(this.state.timeElapsed - this.previousLap)
         this.previousLap = this.state.timeElapsed;
-        this.minLap = Math.min(...this.state.lapsList)
-        this.maxLap = Math.max(...this.state.lapsList)
       }
     }
     else {
@@ -47,10 +44,44 @@ class App extends Component {
     }
   }
 
+  millisecondConversion = (timeElapsed) => {
+    const milliseconds = timeElapsed % 100;
+    const seconds = Math.floor((timeElapsed / 100) % 60);
+    const minutes = Math.floor((timeElapsed / (60 * 100)) % 60);
+    const pad = (time) => time < 10 ? '0' + time : time
+    return pad(minutes) + ":" + pad(seconds) + "." + pad(milliseconds);
+  }
+
+  minMaxCheck = (laps) => {
+    const checkMinLap = Math.min.apply(Math, this.state.lapsList)
+    const checkMaxLap = Math.max.apply(Math, this.state.lapsList)
+
+    if (laps === checkMinLap && this.state.lapsList.length > 2) {
+      return 'green'
+    }
+    else if (laps === checkMaxLap && this.state.lapsList.length > 2) {
+      return 'red'
+    }
+  }
+
   render() {
     return (
       <div className="container">
-        <Stopwatch minLap={this.minLap} maxLap={this.maxLap} previousLap={this.state.previousLap} lapsList={this.state.lapsList} timeElapsed={this.state.timeElapsed} status={this.state.status} handleStartStop={this.handleStartStop} handleResetLap={this.handleResetLap} />
+        <h1 className="time">{this.millisecondConversion(this.state.timeElapsed)}</h1>
+        <div className="button__wrapper">
+          <button className="button__item" onClick={this.handleResetLap}>{this.state.status || this.state.timeElapsed === 0 ? 'Lap' : 'Reset'}</button>
+          <button className={this.status ? 'button__item button__red' : 'button__item button__green'} onClick={this.handleStartStop}>{this.state.status ? 'Stop' : 'Start'}</button>
+        </div>
+        <table className="timer__table">
+          <tbody>
+            <tr><td>Lap</td><td>{this.millisecondConversion(this.state.timeElapsed)}</td></tr>
+            {this.state.lapsList.slice(0).reverse().map((laps, index) => (
+              <tr key={index} className={this.minMaxCheck(laps)}>
+                <td>Lap {this.state.lapsList.length - index}</td><td>{this.millisecondConversion(laps)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     );
   }

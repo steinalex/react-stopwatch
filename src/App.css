@@ -38,11 +38,15 @@ h1 {
 }
 
 .green {
-  background-color: green;
+  color: green;
 }
 
 .red {
-  background-color: red;
+  color: red;
+}
+
+.white {
+  color: white;
 }
 
 .button__green {
