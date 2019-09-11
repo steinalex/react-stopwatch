@@ -27,9 +27,9 @@ h1 {
   font-family: 'Helvetica-Light', Helvetica, Arial, sans-serif;
   font-weight: 600;
   letter-spacing: 1.5px;
-  background-color: rgb(84, 81, 81);
+  background-color: #545151;
   border: 3px solid #0a0a0a;
-  box-shadow: 0 0 0 3px rgb(84, 81, 81);
+  box-shadow: 0 0 0 3px #545151;
   color: white;
   margin: 10px 60px 25px;
   text-align: center;
@@ -39,6 +39,13 @@ h1 {
   width: 70px;
   height: 70px;
   border-radius: 100%;
+}
+
+.button__item.disabled {
+  background-color: #2d1414;
+  border: 3px solid #0a0a0a;
+  box-shadow: 0 0 0 3px #2d1414;
+  color: #b1b1b1;;
 }
 
 .green {
@@ -64,7 +71,7 @@ h1 {
   background-color: #ea000082;
   border: 3px solid #0a0a0a;
   box-shadow: 0 0 0 3px #ea000082;
-  color: #ff4b4b;
+  color: #ff7800;
 }
 
 .timer__table {
@@ -73,6 +80,7 @@ h1 {
   color: white;
   margin-left: auto;
   margin-right: auto;
+  border-collapse: collapse;
 }
 
 .timer__table td {
@@ -80,6 +88,8 @@ h1 {
   font-weight: 600;
   letter-spacing: 1.5px;
   width: 200px;
+  padding: 10px 0;
+  border-bottom: 1px solid #3e3e3e;
 }
 
 .timer__table td:nth-child(2) {

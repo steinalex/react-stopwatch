@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import './App.css';
 
-const App = () => {
-  const [status, setStatus] = useState(false)
-  const [timeElapsed, setTimeElapsed] = useState(0)
-  const [lapsList, setLapsList] = useState([])
-  const [previousLap, setPreviousLap] = useState(0)
+const App: React.FC = () => {
+  const [status, setStatus] = useState<boolean>(false)
+  const [timeElapsed, setTimeElapsed] = useState<number>(0)
+  const [lapsList, setLapsList] = useState<number[]>([])
+  const [previousLap, setPreviousLap] = useState<number>(0)
 
   const tick = useCallback(() => {
-    setTimeElapsed(time => time + 1)
+    setTimeElapsed((time: number) => time + 1)
   }, [setTimeElapsed])
 
   useEffect(() => {
@@ -49,7 +49,7 @@ const App = () => {
     const milliseconds = timeElapsed % 100;
     const seconds = Math.floor((timeElapsed / 100) % 60);
     const minutes = Math.floor((timeElapsed / (60 * 100)) % 60);
-    const pad = (time) => time < 10 ? '0' + time : time
+    const pad = (time: number) => time < 10 ? '0' + time : time
     return pad(minutes) + ":" + pad(seconds) + "." + pad(milliseconds);
   }, [])
 
@@ -73,7 +73,7 @@ const App = () => {
       <div className="container">
         <h1 className="time">{millisecondConversion(timeElapsed)}</h1>
         <div className="button__wrapper">
-          <button className="button__item" onClick={handleResetLap}>{status || timeElapsed === 0 ? 'Lap' : 'Reset'}</button>
+          <button className={timeElapsed > 0 ? 'button__item' : 'button__item  disabled'} onClick={handleResetLap}>{status || timeElapsed === 0 ? 'Lap' : 'Reset'}</button>
           <button className={status ? 'button__item button__red' : 'button__item button__green'} onClick={handleStartStop}>{status ? 'Stop' : 'Start'}</button>
         </div>
         <table className="timer__table">
