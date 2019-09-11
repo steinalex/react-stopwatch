@@ -55,12 +55,16 @@ class App extends Component {
   minMaxCheck = (laps) => {
     const checkMinLap = Math.min.apply(Math, this.state.lapsList)
     const checkMaxLap = Math.max.apply(Math, this.state.lapsList)
+    if (laps === checkMinLap && this.state.lapsList.length > 2) return 'green'
+    else if (laps === checkMaxLap && this.state.lapsList.length > 2) return 'red'
+  }
 
-    if (laps === checkMinLap && this.state.lapsList.length > 2) {
-      return 'green'
+  renderTopRow = () => {
+    if (this.state.lapsList.length === 0) {
+      return <tr><td>Lap 1</td><td>{this.millisecondConversion(this.state.timeElapsed)}</td></tr>
     }
-    else if (laps === checkMaxLap && this.state.lapsList.length > 2) {
-      return 'red'
+    else {
+      return <tr><td>Lap {this.state.lapsList.length + 1}</td><td>{this.millisecondConversion(this.state.timeElapsed - this.previousLap)}</td></tr>
     }
   }
 
@@ -74,7 +78,7 @@ class App extends Component {
         </div>
         <table className="timer__table">
           <tbody>
-            <tr><td>Lap</td><td>{this.millisecondConversion(this.state.timeElapsed)}</td></tr>
+            {this.renderTopRow()}
             {this.state.lapsList.slice(0).reverse().map((laps, index) => (
               <tr key={index} className={this.minMaxCheck(laps)}>
                 <td>Lap {this.state.lapsList.length - index}</td><td>{this.millisecondConversion(laps)}</td>
