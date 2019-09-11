@@ -1,87 +1,87 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import './App.css';
 
-class App extends Component {
-  state = {
-    status: false,
-    timeElapsed: 0,
-    lapsList: [],
-    previousLap: 0,
-    minLap: 0,
-    maxLap: 0
-  }
+const App = () => {
+  const [status, setStatus] = useState(false)
+  const [timeElapsed, setTimeElapsed] = useState(0)
+  const [lapsList, setLapsList] = useState([])
+  const [previousLap, setPreviousLap] = useState(0)
 
-  handleStartStop = () => {
-    if (this.state.status) {
-      clearInterval(this.timer);
-      this.setState({ status: false });
+  const tick = useCallback(() => {
+    setTimeElapsed(time => time + 1)
+  }, [setTimeElapsed])
+
+  useEffect(() => {
+    if(status) {
+      const interval = setInterval(tick, 10)
+      return () => clearInterval(interval)
+    }
+  }, [status, tick])
+
+  const handleStartStop = useCallback(() => {
+    if (status) {
+      setStatus(false);
     }
     else {
-      this.timer = setInterval(() => {
-        this.setState((previousTime) => ({
-          timeElapsed: previousTime.timeElapsed + 1
-        }))
-      }, 10)
-      this.setState({ status: true });
+      setStatus(true);
     }
-  }
+  }, [status, setStatus])
 
-  handleResetLap = () => {
-    if (this.state.status && this.state.timeElapsed > 0) {
-      if (this.state.lapsList.length === 0) {
-        this.previousLap = this.state.timeElapsed;
-        this.setState(state => {
-          state.lapsList.push(this.state.timeElapsed)
-        })
+  const handleResetLap = useCallback(() => {
+    if (status && timeElapsed > 0) {
+      if (lapsList.length === 0) {
+        setPreviousLap(timeElapsed);
+        setLapsList([...lapsList, timeElapsed])
       }
       else {
-        this.state.lapsList.push(this.state.timeElapsed - this.previousLap)
-        this.previousLap = this.state.timeElapsed;
+        setLapsList([...lapsList, timeElapsed - previousLap])
+        setPreviousLap(timeElapsed)
       }
     }
     else {
-      this.setState({ timeElapsed: 0, status: false, lapsList: [] });
+      setTimeElapsed(0)
+      setStatus(false)
+      setLapsList([])
     }
-  }
+  }, [status, timeElapsed, lapsList, previousLap, setStatus, setTimeElapsed, setLapsList, setPreviousLap])
 
-  millisecondConversion = (timeElapsed) => {
+  const millisecondConversion = useCallback((timeElapsed) => {
     const milliseconds = timeElapsed % 100;
     const seconds = Math.floor((timeElapsed / 100) % 60);
     const minutes = Math.floor((timeElapsed / (60 * 100)) % 60);
     const pad = (time) => time < 10 ? '0' + time : time
     return pad(minutes) + ":" + pad(seconds) + "." + pad(milliseconds);
-  }
+  }, [])
 
-  minMaxCheck = (laps) => {
-    const checkMinLap = Math.min.apply(Math, this.state.lapsList)
-    const checkMaxLap = Math.max.apply(Math, this.state.lapsList)
-    if (laps === checkMinLap && this.state.lapsList.length > 2) return 'green'
-    else if (laps === checkMaxLap && this.state.lapsList.length > 2) return 'red'
-  }
+  const minMaxCheck = useCallback((laps) => {
+    const checkMinLap = Math.min.apply(Math, lapsList)
+    const checkMaxLap = Math.max.apply(Math, lapsList)
+    if (laps === checkMinLap && lapsList.length > 2) return 'green'
+    else if (laps === checkMaxLap && lapsList.length > 2) return 'red'
+  }, [lapsList])
 
-  renderTopRow = () => {
-    if (this.state.lapsList.length === 0) {
-      return <tr><td>Lap 1</td><td>{this.millisecondConversion(this.state.timeElapsed)}</td></tr>
+  const renderTopRow = useCallback(() => {
+    if (lapsList.length === 0) {
+      return <tr><td>Lap 1</td><td>{millisecondConversion(timeElapsed)}</td></tr>
     }
     else {
-      return <tr><td>Lap {this.state.lapsList.length + 1}</td><td>{this.millisecondConversion(this.state.timeElapsed - this.previousLap)}</td></tr>
+      return <tr><td>Lap {lapsList.length + 1}</td><td>{millisecondConversion(timeElapsed - previousLap)}</td></tr>
     }
-  }
+  }, [lapsList, timeElapsed, millisecondConversion, previousLap])
 
-  render() {
     return (
       <div className="container">
-        <h1 className="time">{this.millisecondConversion(this.state.timeElapsed)}</h1>
+        <h1 className="time">{millisecondConversion(timeElapsed)}</h1>
         <div className="button__wrapper">
-          <button className="button__item" onClick={this.handleResetLap}>{this.state.status || this.state.timeElapsed === 0 ? 'Lap' : 'Reset'}</button>
-          <button className={this.status ? 'button__item button__red' : 'button__item button__green'} onClick={this.handleStartStop}>{this.state.status ? 'Stop' : 'Start'}</button>
+          <button className="button__item" onClick={handleResetLap}>{status || timeElapsed === 0 ? 'Lap' : 'Reset'}</button>
+          <button className={status ? 'button__item button__red' : 'button__item button__green'} onClick={handleStartStop}>{status ? 'Stop' : 'Start'}</button>
         </div>
         <table className="timer__table">
           <tbody>
-            {this.renderTopRow()}
-            {this.state.lapsList.slice(0).reverse().map((laps, index) => (
-              <tr key={index} className={this.minMaxCheck(laps)}>
-                <td>Lap {this.state.lapsList.length - index}</td><td>{this.millisecondConversion(laps)}</td>
+            {renderTopRow()}
+            {lapsList.slice(0).reverse().map((laps, index) => (
+              <tr key={index} className={minMaxCheck(laps)}>
+                <td>Lap {lapsList.length - index}</td><td>{millisecondConversion(laps)}</td>
               </tr>
             ))}
           </tbody>
@@ -89,6 +89,5 @@ class App extends Component {
       </div>
     );
   }
-}
 
 export default App;
