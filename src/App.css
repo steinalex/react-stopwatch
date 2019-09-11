@@ -1,5 +1,13 @@
+:root {
+  --main-container-width: 290px;
+  --main-bg-color: #0a0a0a;
+  --main-button-color: #545151;
+  --green-button-color: #008000b0;
+  --red-button-color: #ea000082;
+}
+
 html, body {
-  background-color: rgb(10, 10, 10);
+  background-color: var(--main-bg-color);
 }
 
 .container {
@@ -20,18 +28,23 @@ h1 {
 }
 
 .button__wrapper {
-  text-align: center;
+  display: flex;
+  justify-content:space-between;
+  align-items: center;
+  width: var(--main-container-width);
+  padding: 0 0 25px;
+  margin-left: auto;
+  margin-right: auto
 }
 
 .button__item {
   font-family: 'Helvetica-Light', Helvetica, Arial, sans-serif;
   font-weight: 600;
   letter-spacing: 1.5px;
-  background-color: #545151;
-  border: 3px solid #0a0a0a;
-  box-shadow: 0 0 0 3px #545151;
+  background-color: var(--main-button-color);
+  border: 3px solid var(--main-bg-color);
+  box-shadow: 0 0 0 3px var(--main-button-color);
   color: white;
-  margin: 10px 60px 25px;
   text-align: center;
   text-decoration: none;
   font-size: 14px;
@@ -43,7 +56,7 @@ h1 {
 
 .button__item.disabled {
   background-color: #2d1414;
-  border: 3px solid #0a0a0a;
+  border: 3px solid var(--main-bg-color);
   box-shadow: 0 0 0 3px #2d1414;
   color: #b1b1b1;;
 }
@@ -61,21 +74,21 @@ h1 {
 }
 
 .button__green {
-  background-color: #008000b0;
-  border: 3px solid #0a0a0a;
-  box-shadow: 0 0 0 3px #008000b0;
+  background-color: var(--green-button-color);
+  border: 3px solid var(--main-bg-color);
+  box-shadow: 0 0 0 3px var(--green-button-color);
   color: #24ff24;
 }
 
 .button__red {
-  background-color: #ea000082;
-  border: 3px solid #0a0a0a;
-  box-shadow: 0 0 0 3px #ea000082;
+  background-color: var(--red-button-color);
+  border: 3px solid var(--main-bg-color);
+  box-shadow: 0 0 0 3px var(--red-button-color);
   color: #ff7800;
 }
 
 .timer__table {
-  width: 260px;
+  width: var(--main-container-width);
   border-spacing: 0 15px;
   color: white;
   margin-left: auto;
@@ -92,6 +105,6 @@ h1 {
   border-bottom: 1px solid #3e3e3e;
 }
 
-.timer__table td:nth-child(2) {
+.timer__table td:nth-child(even) {
   text-align: right;
 }

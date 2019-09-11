@@ -61,12 +61,8 @@ const App: React.FC = () => {
   }, [lapsList])
 
   const renderTopRow = useCallback(() => {
-    if (lapsList.length === 0) {
-      return <tr><td>Lap 1</td><td>{millisecondConversion(timeElapsed)}</td></tr>
-    }
-    else {
-      return <tr><td>Lap {lapsList.length + 1}</td><td>{millisecondConversion(timeElapsed - previousLap)}</td></tr>
-    }
+    if (lapsList.length === 0) return <tr><td>Lap 1</td><td>{millisecondConversion(timeElapsed)}</td></tr>
+    else return <tr><td>Lap {lapsList.length + 1}</td><td>{millisecondConversion(timeElapsed - previousLap)}</td></tr>
   }, [lapsList, timeElapsed, millisecondConversion, previousLap])
 
     return (
