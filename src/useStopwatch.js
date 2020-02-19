@@ -5,7 +5,7 @@ let interval;
 
 const initialState = { isRunning: false, timeElapsed: 0, previousTime: 0, lapTimes: [] }
 
-const reducer = (state, action) => {
+export const reducer = (state, action) => {
     switch (action) {
         case START_STOP:
             return { ...state, isRunning: !state.isRunning }
@@ -14,7 +14,8 @@ const reducer = (state, action) => {
         case LAP_RESET:
             if (!state.isRunning) {
                 return { isRunning: false, timeElapsed: 0, previousTime: 0, lapTimes: [] }
-            } else {
+            } 
+            else {
                 return {
                     ...state,
                     previousTime: state.timeElapsed,

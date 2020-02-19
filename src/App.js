@@ -2,7 +2,6 @@ import React from 'react';
 import './App.css';
 import { useStopwatch } from './useStopwatch';
 
-
 const App = () => {
 
   const stopWatch = useStopwatch()
@@ -16,8 +15,8 @@ const App = () => {
     <div className="container">
       <h1 className="time">{millisecondConversion(timeElapsed)}</h1>
       <div className="button__wrapper">
-        <button className='button__item' onClick={lapReset}>{lapResetlbl}</button>
-        <button className='button__item' onClick={startStop}>{startStopLbl}</button>
+        <button className='button__item lap-reset' onClick={lapReset}>{lapResetlbl}</button>
+        <button className='button__item start-stop' onClick={startStop}>{startStopLbl}</button>
       </div>
       <table className="timer__table">
         <tbody>
@@ -41,9 +40,17 @@ const millisecondConversion = (timeElapsed) => {
 }
 
 const renderRow = (lap, time, index) =>
-  <tr key={index}>
+  <tr key={index} className={colourFormat(lap)}>
     <td>Lap {lap}</td>
     <td>{time}</td>
   </tr>
+
+const colourFormat = (lap) => {
+  // const minLap = Math.min.apply(Math, lapTimes)
+  // const maxLap = Math.max.apply(Math, lapTimes)
+  // console.log(lapTimes)
+  // if (lap === minLap) return 'green'
+  // else if (lap === maxLap) return 'red'
+}
 
 export default App;
